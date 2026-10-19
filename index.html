@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="linen">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Folio — Smart & Human-Friendly Note Taking</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Backdrop for mobile sidebar drawer -->
+  <div id="sidebar-backdrop" class="sidebar-backdrop"></div>
+
+  <div id="app" class="app-container">
+
+    <!-- ========================================================
+         1. Left Navigation Sidebar
+         ======================================================== -->
+    <aside id="app-sidebar" class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="brand-wrapper">
+          <div class="brand-logo" id="brand-logo-icon"></div>
+          <div>
+            <span class="brand-name">Folio</span>
+            <span class="brand-badge">Notes</span>
+          </div>
+        </div>
+        <button id="btn-close-sidebar-mobile" class="nav-action-icon-btn btn-mobile-nav" title="Close Sidebar" aria-label="Close sidebar">
+          <span id="icon-close-sidebar"></span>
+        </button>
+      </div>
+
+      <div class="sidebar-new-btn-container">
+        <button id="btn-new-note" class="btn-new-note" title="Create a new note (Ctrl+Alt+N)">
+          <span id="icon-new-note-plus"></span>
+          <span>New Note</span>
+        </button>
+      </div>
+
+      <div class="sidebar-scroll-area">
+        <!-- Main Quick Views -->
+        <div class="nav-section">
+          <div class="nav-section-title">Navigation</div>
+          <button class="nav-item is-active" data-view="all" id="nav-view-all">
+            <span class="nav-item-main">
+              <span class="nav-item-icon" id="icon-nav-all"></span>
+              <span>All Notes</span>
+            </span>
+            <span class="nav-badge" id="badge-count-all">0</span>
+          </button>
+          <button class="nav-item" data-view="pinned" id="nav-view-pinned">
+            <span class="nav-item-main">
+              <span class="nav-item-icon" id="icon-nav-pinned"></span>
+              <span>Pinned Notes</span>
+            </span>
+            <span class="nav-badge" id="badge-count-pinned">0</span>
+          </button>
+          <button class="nav-item" data-view="trash" id="nav-view-trash">
+            <span class="nav-item-main">
+              <span class="nav-item-icon" id="icon-nav-trash"></span>
+              <span>Trash</span>
+            </span>
+            <span class="nav-badge" id="badge-count-trash">0</span>
+          </button>
+        </div>
+
+        <!-- Folders Section -->
+        <div class="nav-section">
+          <div class="nav-section-title">
+            <span>Folders</span>
+            <button id="btn-modal-new-folder" class="nav-action-icon-btn" title="Create New Folder" aria-label="Create new folder">
+              <span id="icon-add-folder"></span>
+            </button>
+          </div>
+          <div id="folders-nav-list">
+            <!-- Dynamic folders rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Tags Cloud Section -->
+        <div class="nav-section">
+          <div class="nav-section-title">
+            <span>Tags</span>
+          </div>
+          <div id="tags-cloud-container" class="tag-cloud">
+            <!-- Dynamic tags rendered by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar Footer (Themes & Utilities) -->
+      <div class="sidebar-footer">
+        <div class="theme-selector-wrapper" title="Color Theme">
+          <button class="theme-btn is-active" data-set-theme="linen" title="Warm Linen & Terracotta">
+            <span id="icon-theme-linen"></span>
+          </button>
+          <button class="theme-btn" data-set-theme="sage" title="Forest Sage">
+            <span id="icon-theme-sage"></span>
+          </button>
+          <button class="theme-btn" data-set-theme="slate" title="Nordic Slate">
+            <span id="icon-theme-slate"></span>
+          </button>
+          <button class="theme-btn" data-set-theme="espresso" title="Warm Walnut Night">
+            <span id="icon-theme-espresso"></span>
+          </button>
+        </div>
+
+        <div class="sidebar-utility-actions">
+          <button id="btn-open-templates-modal" class="icon-btn-utility" title="Smart Note Templates">
+            <span id="icon-util-template"></span>
+          </button>
+          <button id="btn-open-backup-modal" class="icon-btn-utility" title="Backup & Restore">
+            <span id="icon-util-backup"></span>
+          </button>
+          <button id="btn-open-shortcuts-modal" class="icon-btn-utility" title="Keyboard Shortcuts (?)">
+            <span id="icon-util-keyboard"></span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ========================================================
+         2. Middle Notes List Pane
+         ======================================================== -->
+    <section id="notes-list-pane" class="notes-list-pane">
+      <div class="notes-list-header">
+        <div class="search-box-wrapper">
+          <span class="search-icon-inside" id="icon-search-pane"></span>
+          <input type="text" id="search-input" class="search-input" placeholder="Search notes by title or content (Ctrl+F)..." autocomplete="off" spellcheck="false">
+          <button id="btn-clear-search" class="search-clear-btn" style="display:none;" title="Clear Search">
+            <span id="icon-clear-search"></span>
+          </button>
+        </div>
+
+        <div class="notes-list-toolbar">
+          <div class="current-view-title" id="current-view-title">
+            <span>All Notes</span>
+            <span class="notes-count-text" id="view-notes-count">(0)</span>
+          </div>
+          <div class="sort-select-wrapper">
+            <select id="sort-select" class="sort-select" title="Sort Notes">
+              <option value="updated">Recently Edited</option>
+              <option value="created">Recently Created</option>
+              <option value="title">Title (A-Z)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notes cards scroll container -->
+      <div id="notes-list-scroll-area" class="notes-list-scroll-area">
+        <!-- Pinned Section -->
+        <div id="pinned-notes-section" style="display:none;">
+          <div class="notes-section-label">
+            <span id="icon-pinned-header"></span>
+            <span>Pinned</span>
+          </div>
+          <div id="pinned-notes-list" class="notes-group-container"></div>
+        </div>
+
+        <!-- All / Unpinned Section -->
+        <div id="regular-notes-section">
+          <div class="notes-section-label" id="regular-notes-label" style="display:none;">
+            <span>Notes</span>
+          </div>
+          <div id="regular-notes-list" class="notes-group-container"></div>
+        </div>
+
+        <!-- Empty State Container -->
+        <div id="notes-empty-state" class="empty-notes-state" style="display:none;">
+          <div class="empty-icon-circle" id="icon-empty-state"></div>
+          <div class="empty-state-title" id="empty-state-title">No notes found</div>
+          <div class="empty-state-desc" id="empty-state-desc">Try clearing your search query or create a fresh note to get started.</div>
+          <button id="btn-empty-create-note" class="btn-primary" style="margin-top: 6px;">Create Note</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         3. Right Note Editor & Markdown Preview Pane
+         ======================================================== -->
+    <main id="note-editor-pane" class="note-editor-pane" data-mode="split">
+      <!-- Editor Header Toolbar -->
+      <div class="editor-header-bar">
+        <div class="editor-header-left">
+          <button id="btn-toggle-sidebar" class="btn-mobile-nav" title="Toggle Navigation Sidebar">
+            <span id="icon-mobile-menu"></span>
+          </button>
+          <button id="btn-mobile-back" class="btn-mobile-nav btn-mobile-back-to-list" style="display:none;" title="Back to Notes List">
+            <span id="icon-mobile-back"></span>
+          </button>
+
+          <!-- Folder Selector -->
+          <div class="folder-selector-wrapper">
+            <select id="note-folder-select" class="folder-select" title="Assign to Folder">
+              <option value="">📁 Uncategorized</option>
+              <!-- Dynamic folder options -->
+            </select>
+          </div>
+
+          <!-- Color Accent Picker -->
+          <div class="note-color-picker-dropdown">
+            <button id="btn-note-color-dot" class="btn-color-dot" title="Note Accent Color"></button>
+            <div id="color-palette-popover" class="color-palette-popover" style="display:none;">
+              <span class="color-swatch" style="background:#D97736;" data-color="#D97736" title="Warm Terracotta"></span>
+              <span class="color-swatch" style="background:#4D7C5D;" data-color="#4D7C5D" title="Forest Sage"></span>
+              <span class="color-swatch" style="background:#3E6B89;" data-color="#3E6B89" title="Nordic Slate"></span>
+              <span class="color-swatch" style="background:#E09F3E;" data-color="#E09F3E" title="Honey Ochre"></span>
+              <span class="color-swatch" style="background:#9E2A2B;" data-color="#9E2A2B" title="Muted Rust"></span>
+              <span class="color-swatch" style="background:#70587C;" data-color="#70587C" title="Heather Plum"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Editor View & Actions Right -->
+        <div class="editor-header-right">
+          <button id="btn-toggle-pin-editor" class="btn-toolbar-icon" title="Pin / Unpin Note">
+            <span id="icon-pin-editor"></span>
+          </button>
+
+          <!-- Mode Toggle: Edit | Split | Preview -->
+          <div class="mode-toggle-group">
+            <button class="mode-btn" data-mode="edit" id="btn-mode-edit" title="Markdown Editor Only">
+              <span id="icon-mode-edit"></span>
+              <span>Edit</span>
+            </button>
+            <button class="mode-btn is-active" data-mode="split" id="btn-mode-split" title="Split Screen">
+              <span id="icon-mode-split"></span>
+              <span>Split</span>
+            </button>
+            <button class="mode-btn" data-mode="preview" id="btn-mode-preview" title="Rendered Preview Only">
+              <span id="icon-mode-preview"></span>
+              <span>Preview</span>
+            </button>
+          </div>
+
+          <!-- Actions Dropdown -->
+          <div style="position:relative;">
+            <button id="btn-more-actions" class="btn-toolbar-icon" title="More Options">
+              <span id="icon-more-actions"></span>
+            </button>
+            <div id="dropdown-more-actions" class="dropdown-menu">
+              <button class="dropdown-item" id="btn-action-export-md">
+                <span id="icon-action-export-md"></span>
+                <span>Export as Markdown</span>
+              </button>
+              <button class="dropdown-item" id="btn-action-export-txt">
+                <span id="icon-action-export-txt"></span>
+                <span>Export as Plain Text</span>
+              </button>
+              <button class="dropdown-item" id="btn-action-duplicate">
+                <span id="icon-action-duplicate"></span>
+                <span>Duplicate Note</span>
+              </button>
+              <div class="dropdown-divider"></div>
+              <button class="dropdown-item is-danger" id="btn-action-delete">
+                <span id="icon-action-delete"></span>
+                <span id="text-action-delete">Move to Trash</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Markdown Quick Formatting Toolbar -->
+      <div id="markdown-formatting-toolbar" class="markdown-formatting-toolbar">
+        <button class="fmt-btn" data-fmt="bold" title="Bold (Ctrl+B)"><span id="icon-fmt-bold"></span></button>
+        <button class="fmt-btn" data-fmt="italic" title="Italic (Ctrl+I)"><span id="icon-fmt-italic"></span></button>
+        <button class="fmt-btn" data-fmt="h1" title="Heading 1"><span id="icon-fmt-h1"></span></button>
+        <button class="fmt-btn" data-fmt="h2" title="Heading 2"><span id="icon-fmt-h2"></span></button>
+        <div class="fmt-divider"></div>
+        <button class="fmt-btn" data-fmt="bullet" title="Bullet List"><span id="icon-fmt-list"></span></button>
+        <button class="fmt-btn" data-fmt="todo" title="Interactive Checklist"><span id="icon-fmt-check"></span></button>
+        <button class="fmt-btn" data-fmt="quote" title="Blockquote"><span id="icon-fmt-quote"></span></button>
+        <button class="fmt-btn" data-fmt="code" title="Code Block"><span id="icon-fmt-code"></span></button>
+        <button class="fmt-btn" data-fmt="table" title="Insert Table"><span id="icon-fmt-table"></span></button>
+      </div>
+
+      <!-- Title & Tags Area -->
+      <div class="note-meta-container">
+        <input type="text" id="note-title-input" class="note-title-input" placeholder="Note Title..." autocomplete="off">
+        <div class="note-tags-container" id="note-tags-container">
+          <!-- Dynamic tags badges -->
+          <input type="text" id="tag-input-inline" class="tag-input-inline" placeholder="+ Add tag..." maxlength="25">
+        </div>
+      </div>
+
+      <!-- Split Editor & Preview Container -->
+      <div class="editor-body-split">
+        <div class="editor-textarea-pane">
+          <textarea id="note-body-textarea" class="note-body-textarea" placeholder="Write with calm clarity... Markdown supported (# Header, **bold**, - [ ] task)"></textarea>
+        </div>
+        <div class="markdown-preview-pane" id="markdown-preview-pane">
+          <div id="markdown-preview-content" class="markdown-preview-content"></div>
+        </div>
+      </div>
+
+      <!-- Status Footer Bar -->
+      <div class="editor-status-bar">
+        <div class="status-stats-left">
+          <span class="status-stat-item" id="stat-words">0 words</span>
+          <span class="status-stat-item" id="stat-chars">0 chars</span>
+          <span class="status-stat-item" id="stat-read-time">0 min read</span>
+          <div id="task-progress-container" class="task-progress-pill" style="display:none;">
+            <div class="task-progress-bar"><div id="task-progress-fill" class="task-progress-fill" style="width:0%;"></div></div>
+            <span id="task-progress-text">0/0 completed</span>
+          </div>
+        </div>
+        <div class="status-stats-right">
+          <span id="save-indicator" class="save-indicator">
+            <span id="icon-save-check"></span>
+            <span id="save-indicator-text">Saved</span>
+          </span>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ========================================================
+       MODALS
+       ======================================================== -->
+
+  <!-- 1. New Folder Modal -->
+  <div id="modal-folder" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span id="icon-modal-folder-title"></span>
+          <span>Create New Folder</span>
+        </div>
+        <button class="btn-close-modal" data-close-modal="modal-folder"><span id="icon-close-folder-modal"></span></button>
+      </div>
+      <div class="modal-body">
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <label style="font-size:0.82rem; font-weight:600; color:var(--text-muted);">Folder Name</label>
+          <input type="text" id="input-folder-name" class="search-input" placeholder="e.g. Research, Projects, Journal" maxlength="30">
+        </div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <label style="font-size:0.82rem; font-weight:600; color:var(--text-muted);">Folder Color</label>
+          <div style="display:flex; gap:8px;">
+            <label><input type="radio" name="folder-color" value="#B3541E" checked> <span style="color:#B3541E;">● Terracotta</span></label>
+            <label><input type="radio" name="folder-color" value="#3E6B89"> <span style="color:#3E6B89;">● Slate</span></label>
+            <label><input type="radio" name="folder-color" value="#4D7C5D"> <span style="color:#4D7C5D;">● Sage</span></label>
+            <label><input type="radio" name="folder-color" value="#9B5A36"> <span style="color:#9B5A36;">● Walnut</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" data-close-modal="modal-folder">Cancel</button>
+        <button id="btn-save-folder" class="btn-primary">Create Folder</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Templates Modal -->
+  <div id="modal-templates" class="modal-overlay">
+    <div class="modal-dialog" style="max-width: 580px;">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span id="icon-modal-template-title"></span>
+          <span>Smart Note Templates</span>
+        </div>
+        <button class="btn-close-modal" data-close-modal="modal-templates"><span id="icon-close-template-modal"></span></button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:0.88rem; color:var(--text-muted);">Select a thoughtfully crafted structure to begin your writing:</p>
+        <div id="templates-list-container" class="templates-grid">
+          <!-- Dynamic templates rendered by JS -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" data-close-modal="modal-templates">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Backup & Storage Modal -->
+  <div id="modal-backup" class="modal-overlay">
+    <div class="modal-dialog" style="max-width: 520px;">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span id="icon-modal-backup-title"></span>
+          <span>Persistent Storage & Backups</span>
+        </div>
+        <button class="btn-close-modal" data-close-modal="modal-backup"><span id="icon-close-backup-modal"></span></button>
+      </div>
+      <div class="modal-body">
+        <div style="background-color:var(--bg-app); border:1px solid var(--border-light); padding:12px; border-radius:8px;">
+          <h4 style="font-size:0.92rem; font-weight:600; margin-bottom:4px;">Browser Local Persistence</h4>
+          <p style="font-size:0.82rem; color:var(--text-muted);">All notes, folders, and tags are saved continuously in your browser's local storage. They persist across browser reloads and offline sessions.</p>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <h4 style="font-size:0.92rem; font-weight:600;">Export Data</h4>
+          <p style="font-size:0.82rem; color:var(--text-muted);">Download a complete JSON backup containing all your notes, folders, and tags.</p>
+          <button id="btn-export-backup-json" class="btn-secondary" style="display:flex; align-items:center; gap:8px; justify-content:center;">
+            <span id="icon-export-backup-btn"></span>
+            <span>Download JSON Backup</span>
+          </button>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:8px; border-top:1px solid var(--border-light); padding-top:14px;">
+          <h4 style="font-size:0.92rem; font-weight:600;">Restore from Backup</h4>
+          <p style="font-size:0.82rem; color:var(--text-muted);">Import notes from a previously exported Folio JSON backup file.</p>
+          <input type="file" id="input-import-backup-file" accept=".json" style="display:none;">
+          <button id="btn-trigger-import-file" class="btn-secondary" style="display:flex; align-items:center; gap:8px; justify-content:center;">
+            <span id="icon-import-backup-btn"></span>
+            <span>Choose JSON File to Restore</span>
+          </button>
+        </div>
+
+        <div style="border-top:1px solid var(--border-light); padding-top:14px;">
+          <button id="btn-reset-sample-data" class="btn-secondary" style="color:var(--text-subtle); font-size:0.8rem; width:100%;">
+            Load Fresh Welcome & Sample Notes
+          </button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" data-close-modal="modal-backup">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Keyboard Shortcuts Modal -->
+  <div id="modal-shortcuts" class="modal-overlay">
+    <div class="modal-dialog" style="max-width: 460px;">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span id="icon-modal-shortcuts-title"></span>
+          <span>Keyboard Shortcuts</span>
+        </div>
+        <button class="btn-close-modal" data-close-modal="modal-shortcuts"><span id="icon-close-shortcuts-modal"></span></button>
+      </div>
+      <div class="modal-body">
+        <div class="shortcut-row"><span>New Note</span><span class="shortcut-kbd">Ctrl + Alt + N</span></div>
+        <div class="shortcut-row"><span>Search Notes</span><span class="shortcut-kbd">Ctrl + F</span></div>
+        <div class="shortcut-row"><span>Save Note</span><span class="shortcut-kbd">Ctrl + S</span></div>
+        <div class="shortcut-row"><span>Toggle Pin</span><span class="shortcut-kbd">Ctrl + P</span></div>
+        <div class="shortcut-row"><span>Delete Note</span><span class="shortcut-kbd">Ctrl + Delete</span></div>
+        <div class="shortcut-row"><span>Bold Text</span><span class="shortcut-kbd">Ctrl + B</span></div>
+        <div class="shortcut-row"><span>Italic Text</span><span class="shortcut-kbd">Ctrl + I</span></div>
+        <div class="shortcut-row"><span>Toggle Split / Edit</span><span class="shortcut-kbd">Ctrl + E</span></div>
+        <div class="shortcut-row"><span>Close Dialogs / Search</span><span class="shortcut-kbd">Esc</span></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" data-close-modal="modal-shortcuts">Got It</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Confirmation Modal -->
+  <div id="modal-confirm" class="modal-overlay">
+    <div class="modal-dialog" style="max-width: 420px;">
+      <div class="modal-header">
+        <div class="modal-title" id="confirm-modal-title">Confirm Action</div>
+        <button class="btn-close-modal" data-close-modal="modal-confirm"><span id="icon-close-confirm-modal"></span></button>
+      </div>
+      <div class="modal-body">
+        <p id="confirm-modal-message" style="font-size:0.9rem; color:var(--text-main);">Are you sure you want to proceed?</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" data-close-modal="modal-confirm">Cancel</button>
+        <button id="btn-confirm-proceed" class="btn-danger">Proceed</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Application Scripts -->
+  <script src="assets/icons.js"></script>
+  <script src="js/sampleNotes.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/markdown.js"></script>
+  <script src="js/templates.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

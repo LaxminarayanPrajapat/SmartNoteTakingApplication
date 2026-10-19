@@ -1,0 +1,180 @@
+/* ============================================================
+   Folio Notes - Non-AI Gradient, Human-Friendly Color Themes
+   Warm, tactile, organic, and easy on human eyes.
+   ============================================================ */
+
+/* Theme 1: Warm Linen & Terracotta (Default) */
+[data-theme="linen"], :root {
+  --bg-app: #FAF7F2;
+  --bg-sidebar: #F2EDE4;
+  --bg-sidebar-hover: #E8E1D5;
+  --bg-sidebar-active: #DFD7C9;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #FDFCFA;
+  --bg-card-selected: #FDF4EB;
+  --bg-editor: #FFFFFF;
+  --bg-preview: #FAF8F5;
+  --bg-input: #FFFFFF;
+  --bg-tag: #EFE9DF;
+  --bg-tag-hover: #E3DBD0;
+  --bg-code: #F4EFEA;
+  --bg-quote: #F7F3ED;
+  --bg-table-header: #F4EFEA;
+  --bg-table-alt: #FBF9F6;
+  --bg-modal-overlay: rgba(42, 39, 35, 0.45);
+
+  --border-light: #EBE5DB;
+  --border-medium: #DED7CB;
+  --border-focus: #C2632F;
+  --border-selected: #DDA37D;
+
+  --text-main: #2A2723;
+  --text-muted: #6B655D;
+  --text-subtle: #968F85;
+  --text-on-accent: #FFFFFF;
+
+  --accent-primary: #C2632F;       /* Warm Terracotta */
+  --accent-primary-hover: #A85324;
+  --accent-secondary: #8C502C;
+  --accent-soft: #FCEFE6;
+  --accent-badge: #DF763B;
+  --pin-gold: #D4881A;
+
+  --shadow-subtle: 0 1px 3px rgba(45, 40, 35, 0.04);
+  --shadow-card: 0 2px 6px rgba(45, 40, 35, 0.05);
+  --shadow-elevated: 0 10px 24px rgba(45, 40, 35, 0.1);
+  --shadow-modal: 0 20px 40px rgba(35, 30, 25, 0.16);
+
+  --font-serif: "Newsreader", "Charter", "Merriweather", "Georgia", serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", "Cascadia Code", "SFMono-Regular", Consolas, Menlo, monospace;
+}
+
+/* Theme 2: Forest Sage & Muted Olive */
+[data-theme="sage"] {
+  --bg-app: #F4F6F3;
+  --bg-sidebar: #E9EFE9;
+  --bg-sidebar-hover: #DEE6DE;
+  --bg-sidebar-active: #D3DFD3;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #FAFCFA;
+  --bg-card-selected: #EDF4EE;
+  --bg-editor: #FFFFFF;
+  --bg-preview: #F6F8F5;
+  --bg-input: #FFFFFF;
+  --bg-tag: #E3EDE3;
+  --bg-tag-hover: #D5E2D5;
+  --bg-code: #EBF0EB;
+  --bg-quote: #EFF4EF;
+  --bg-table-header: #EAF0EA;
+  --bg-table-alt: #F8FAF8;
+  --bg-modal-overlay: rgba(25, 38, 29, 0.45);
+
+  --border-light: #DFE7DF;
+  --border-medium: #CFDBCF;
+  --border-focus: #3F6D4F;
+  --border-selected: #8AB396;
+
+  --text-main: #202B24;
+  --text-muted: #56655A;
+  --text-subtle: #849387;
+  --text-on-accent: #FFFFFF;
+
+  --accent-primary: #3F6D4F;       /* Calming Deep Sage */
+  --accent-primary-hover: #32583F;
+  --accent-secondary: #2C523B;
+  --accent-soft: #E9F2EB;
+  --accent-badge: #4B7F5C;
+  --pin-gold: #C68A1D;
+
+  --shadow-subtle: 0 1px 3px rgba(30, 45, 35, 0.04);
+  --shadow-card: 0 2px 6px rgba(30, 45, 35, 0.05);
+  --shadow-elevated: 0 10px 24px rgba(30, 45, 35, 0.09);
+  --shadow-modal: 0 20px 40px rgba(25, 40, 30, 0.15);
+}
+
+/* Theme 3: Nordic Slate & Denim */
+[data-theme="slate"] {
+  --bg-app: #F4F5F7;
+  --bg-sidebar: #EAECEF;
+  --bg-sidebar-hover: #DFE3E7;
+  --bg-sidebar-active: #D4D9DF;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #FBFCFD;
+  --bg-card-selected: #EDF2F7;
+  --bg-editor: #FFFFFF;
+  --bg-preview: #F6F8FA;
+  --bg-input: #FFFFFF;
+  --bg-tag: #E2E6EC;
+  --bg-tag-hover: #D5DBE3;
+  --bg-code: #ECEFF3;
+  --bg-quote: #F0F3F7;
+  --bg-table-header: #EAEFF4;
+  --bg-table-alt: #F9FAFB;
+  --bg-modal-overlay: rgba(30, 38, 50, 0.45);
+
+  --border-light: #DFE3E8;
+  --border-medium: #CFD6DF;
+  --border-focus: #365D82;
+  --border-selected: #81A4C7;
+
+  --text-main: #1F2633;
+  --text-muted: #576274;
+  --text-subtle: #8792A2;
+  --text-on-accent: #FFFFFF;
+
+  --accent-primary: #365D82;       /* Nordic Slate Blue */
+  --accent-primary-hover: #294765;
+  --accent-secondary: #243D56;
+  --accent-soft: #E9F0F6;
+  --accent-badge: #3C6892;
+  --pin-gold: #CB8D1F;
+
+  --shadow-subtle: 0 1px 3px rgba(30, 38, 50, 0.04);
+  --shadow-card: 0 2px 6px rgba(30, 38, 50, 0.05);
+  --shadow-elevated: 0 10px 24px rgba(30, 38, 50, 0.09);
+  --shadow-modal: 0 20px 40px rgba(25, 33, 45, 0.15);
+}
+
+/* Theme 4: Warm Walnut Dark (Night Mode, Tactile & Cozy) */
+[data-theme="espresso"] {
+  --bg-app: #1A1816;
+  --bg-sidebar: #221F1B;
+  --bg-sidebar-hover: #2C2824;
+  --bg-sidebar-active: #36322C;
+  --bg-card: #26221D;
+  --bg-card-hover: #2D2823;
+  --bg-card-selected: #383027;
+  --bg-editor: #1F1C18;
+  --bg-preview: #221F1B;
+  --bg-input: #26221D;
+  --bg-tag: #332D26;
+  --bg-tag-hover: #3E372E;
+  --bg-code: #29241E;
+  --bg-quote: #27231E;
+  --bg-table-header: #2B2620;
+  --bg-table-alt: #231F1A;
+  --bg-modal-overlay: rgba(10, 8, 7, 0.7);
+
+  --border-light: #332D26;
+  --border-medium: #423B33;
+  --border-focus: #D48344;
+  --border-selected: #A66432;
+
+  --text-main: #EFECE6;
+  --text-muted: #AAA296;
+  --text-subtle: #756D62;
+  --text-on-accent: #1A1816;
+
+  --accent-primary: #D48344;       /* Warm Honey Amber */
+  --accent-primary-hover: #E29354;
+  --accent-secondary: #B86E34;
+  --accent-soft: #382B1E;
+  --accent-badge: #D48344;
+  --pin-gold: #E5A83B;
+
+  --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.2);
+  --shadow-card: 0 2px 6px rgba(0, 0, 0, 0.25);
+  --shadow-elevated: 0 10px 24px rgba(0, 0, 0, 0.4);
+  --shadow-modal: 0 20px 40px rgba(0, 0, 0, 0.55);
+}
